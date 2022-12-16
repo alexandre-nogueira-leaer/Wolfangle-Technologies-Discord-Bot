@@ -29,8 +29,21 @@ module.exports = {
             (role) => role.name === "Discord Moderator"
         );
 
-        console.log(interaction.guild.members.cache.get(selectedUser.id).voice.channel)
-        console.log(interaction.member.voice.channel.name)
+        const staff = interaction.guild.roles.cache.findKey(
+            (role) => role.name === "Staff"
+        );
+
+        if (!interaction.member.roles.cache.hasAny(staff)) {
+            const errorEmbed = new EmbedBuilder()
+                .setColor(0xff0000)
+                .setDescription(
+                    `You are missing the permissions to execute the command.\nMake sure you are allowed to execute this command.\n\nIn case of doubt, please contact a <@&${discordMod}> to check if you can execute the command.`
+                );
+            return await interaction.reply({embeds: [errorEmbed]});
+        }
+
+        //console.log(interaction.guild.members.cache.get(selectedUser.id).voice.channel)
+        //console.log(interaction.member.voice.channel.name)
 
         if (
             interaction.guild.members.cache.get(selectedUser.id).voice.channel?.name !==
