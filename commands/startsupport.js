@@ -28,12 +28,17 @@ module.exports = {
         const discordMod = interaction.guild.roles.cache.findKey(
             (role) => role.name === "Discord Moderator"
         );
-
         const staff = interaction.guild.roles.cache.findKey(
             (role) => role.name === "Staff"
         );
+        const execStaff = interaction.guild.roles.cache.findKey(
+            (role) => role.name === "Executive Staff"
+        );
+        const suppStaff = interaction.guild.roles.cache.findKey(
+            (role) => role.name === "Support Staff"
+        );
 
-        if (!interaction.member.roles.cache.hasAny(staff)) {
+        if (!interaction.member.roles.cache.hasAny(staff, discordMod, execStaff, suppStaff)) {
             const errorEmbed = new EmbedBuilder()
                 .setColor(0xff0000)
                 .setDescription(
@@ -42,12 +47,9 @@ module.exports = {
             return await interaction.reply({embeds: [errorEmbed]});
         }
 
-        //console.log(interaction.guild.members.cache.get(selectedUser.id).voice.channel)
-        //console.log(interaction.member.voice.channel.name)
-
         if (
             interaction.guild.members.cache.get(selectedUser.id).voice.channel?.name !==
-            "General Voice" // IMPORTANT - Change to correct channel, after debugging and completion
+            "General Voice" // TODO !IMPORTANT - Change to correct channel, after debugging and completion
         ) {
             // Error for user not on waiting room channel
             const errorEmbed = new EmbedBuilder()
@@ -58,24 +60,20 @@ module.exports = {
             return await interaction.editReply({embeds: [errorEmbed]});
         }
 
-        const supportChannels = [];
+        // TODO - maybe force the staff to be on waiting room and be moved at the same time
 
-        interaction.guild.channels.cache.forEach(
+        interaction.guild.channels.cache.some(
             ((channel) => {
                 if (channel.name.includes("Support Voice")) {
-                    supportChannels.push(channel);
+                    if (channel.members.size === 0) {
+                        interaction.guild.members.cache
+                            .get(selectedUser.id)
+                            .voice.setChannel(channel);
+                        return true;
+                    }
                 }
             })
         );
-
-        supportChannels.every((channel) => {
-            if (channel.members.size === 0) {
-                interaction.guild.members.cache
-                    .get(selectedUser.id)
-                    .voice.setChannel(channel);
-                return false;
-            }
-            return true;
-        });
+        
     },
 };
