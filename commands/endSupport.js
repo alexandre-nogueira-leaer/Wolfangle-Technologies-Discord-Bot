@@ -6,15 +6,24 @@ const {SlashCommandBuilder, EmbedBuilder} = require("discord.js")
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("endsupport").setDescription("TODO"), // TODO - Command description
+        .setName("endsupport").setDescription("Ends an active support session"),
     async execute(interaction) {
         await interaction.deferReply();
 
         const discordMod = interaction.guild.roles.cache.findKey(
             (role) => role.name === "Discord Moderator"
         );
+        const staff = interaction.guild.roles.cache.findKey(
+            (role) => role.name === "Staff"
+        );
+        const execStaff = interaction.guild.roles.cache.findKey(
+            (role) => role.name === "Executive Staff"
+        );
+        const suppStaff = interaction.guild.roles.cache.findKey(
+            (role) => role.name === "Support Staff"
+        );
 
-        if (!interaction.member.roles.cache.has(discordMod)) {
+        if (!interaction.member.roles.cache.hasAny(staff, discordMod, execStaff, suppStaff)) {
             const errorEmbed = new EmbedBuilder()
                 .setColor(0xff0000)
                 .setDescription(
@@ -22,7 +31,6 @@ module.exports = {
                 );
             return interaction.editReply({embeds: [errorEmbed]});
         }
-
 
         if (!interaction.member.voice.channel?.name.includes("Support Voice")) {
             const errorEmbed = new EmbedBuilder()
@@ -33,12 +41,10 @@ module.exports = {
             return interaction.editReply({embeds: [errorEmbed]});
         }
 
-
-        const channel = interaction.member.voice.channel;
         // TODO - edit this to an AFK channel or a queue
         const exitChannel = interaction.guild.channels.cache.findKey((channel) => channel.name === "General Voice")
 
-        await channel.members.forEach(
+        await interaction.member.voice.channel.members.forEach(
             member => {
                 member.voice.setChannel(exitChannel)
             }
@@ -52,6 +58,4 @@ module.exports = {
         return interaction.editReply({embeds: [errorEmbed]});
 
     }
-
-
 }
