@@ -47,6 +47,17 @@ module.exports = {
             return await interaction.reply({embeds: [errorEmbed]});
         }
 
+        if (interaction.member.voice.channel?.name !== "General Voice")
+            // TODO !IMPORTANT - Change to correct channel, after debugging and completion
+        {
+            const errorEmbed = new EmbedBuilder()
+                .setColor(0xff0000)
+                .setDescription(
+                    `Could not move you.\nYou are not in the Support Waiting Room.\nMake sure to join the correct voice channel.\n\nIn case of error, please contact a <@&${discordMod}>.`
+                );
+            return await interaction.editReply({embeds: [errorEmbed]});
+        }
+
         if (
             interaction.guild.members.cache.get(selectedUser.id).voice.channel?.name !==
             "General Voice" // TODO !IMPORTANT - Change to correct channel, after debugging and completion
@@ -55,17 +66,16 @@ module.exports = {
             const errorEmbed = new EmbedBuilder()
                 .setColor(0xff0000)
                 .setDescription(
-                    `Cloud not move the selected user.\nThe user you are selecting is not on the Support Waiting Room.\nMake sure to guide the user to the correct voice channel.\n\nIn case of error, please contact a <@&${discordMod}>.`
+                    `Could not move the selected user.\nThe user you are selecting is not on the Support Waiting Room.\nMake sure to guide the user to the correct voice channel.\n\nIn case of error, please contact a <@&${discordMod}>.`
                 );
             return await interaction.editReply({embeds: [errorEmbed]});
         }
-
-        // TODO - maybe force the staff to be on waiting room and be moved at the same time
 
         interaction.guild.channels.cache.some(
             ((channel) => {
                 if (channel.name.includes("Support Voice")) {
                     if (channel.members.size === 0) {
+                        interaction.member.voice.setChannel(channel);
                         interaction.guild.members.cache
                             .get(selectedUser.id)
                             .voice.setChannel(channel);
@@ -74,6 +84,6 @@ module.exports = {
                 }
             })
         );
-        
+
     },
 };
