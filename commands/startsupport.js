@@ -71,7 +71,7 @@ module.exports = {
             return await interaction.editReply({embeds: [errorEmbed]});
         }
 
-        interaction.guild.channels.cache.some(
+        if (!interaction.guild.channels.cache.some(
             ((channel) => {
                 if (channel.name.includes("Support Voice")) {
                     if (channel.members.size === 0) {
@@ -83,7 +83,21 @@ module.exports = {
                     }
                 }
             })
-        );
+        )) {
+            const errorEmbed = new EmbedBuilder()
+                .setColor(0xff0000)
+                .setDescription(
+                    `All support channels full.\nPlease wait for a free room in order to conduct the support.\nIf the waiting time is too long, please use other methods of assistance.\n\nIn case of error, please contact a <@&${discordMod}>.`
+                );
+            return await interaction.editReply({embeds: [errorEmbed]});
+        }
+
+        const errorEmbed = new EmbedBuilder()
+            .setColor(0x00FF00)
+            .setDescription(
+                `Support session successfully started!\nTo end the session please use the \`/endsupport\` slash command`
+            );
+        return interaction.editReply({embeds: [errorEmbed]});
 
     },
 };
