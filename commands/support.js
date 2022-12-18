@@ -7,7 +7,7 @@ const {SlashCommandBuilder, EmbedBuilder} = require("discord.js");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("support")
-
+        .setDescription("Commands for a support session")
         .addSubcommand(subcommand =>
             subcommand
                 .setName("start")
