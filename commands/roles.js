@@ -78,6 +78,9 @@ module.exports = {
         const selectedRole = interaction.options.getRole("role");
         const reason = interaction.options.getString("reason");
 
+        // TODO - add permissions for invalid roles
+        // TODO - add checks for already existing roles
+
         if (interaction.options.getSubcommand() === "add") {
             await interaction.guild.members.cache
                 .get(selectedUser.id)
@@ -109,7 +112,5 @@ module.exports = {
                 );
             return interaction.editReply({embeds: [successEmbed]});
         }
-
-
     },
 };
