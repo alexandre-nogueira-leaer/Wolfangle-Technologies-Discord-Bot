@@ -65,7 +65,7 @@ module.exports = {
                 const errorEmbed = new EmbedBuilder()
                     .setColor(0xff0000)
                     .setDescription(
-                        `Could not move you.\nYou are not in the Support Waiting Room.\nMake sure to join the correct voice channel.\n\nIn case of error, please contact a <@&${discordMod}>.`
+                        `Failed to move you.\n\nCould not find you in the Support Waiting Room.\nMake sure to join the correct voice channel.\n\nIn case of error, please contact a <@&${discordMod}>.`
                     );
                 return await interaction.editReply({embeds: [errorEmbed]});
             }
@@ -78,7 +78,7 @@ module.exports = {
                 const errorEmbed = new EmbedBuilder()
                     .setColor(0xff0000)
                     .setDescription(
-                        `Could not move the selected user.\nThe user you are selecting is not on the Support Waiting Room.\nMake sure to guide the user to the correct voice channel.\n\nIn case of error, please contact a <@&${discordMod}>.`
+                        `Failed to move the selected user.\n\nThe user you are selecting is not on the Support Waiting Room.\nMake sure to guide the user to the correct voice channel.\n\nIn case of error, please contact a <@&${discordMod}>.`
                     );
                 return await interaction.editReply({embeds: [errorEmbed]});
             }
