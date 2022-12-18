@@ -54,7 +54,7 @@ module.exports = {
         }
 
         if (
-            !interaction.member.roles.cache.hasAny(execStaff, discordMod)
+            !interaction.member.roles.cache.hasAny(execStaff)
         ) {
             const errorEmbed = new EmbedBuilder()
                 .setColor(0xff0000)
