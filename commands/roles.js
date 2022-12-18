@@ -86,8 +86,12 @@ module.exports = {
                     `Role added per slash command executed by <${interaction.member.user.username}> (${interaction.member.nickname}) || Reason: ${reason}.`
                 );
 
-            // TODO - transform into embeds
-            return await interaction.editReply("Role added successfully.");
+            const successEmbed = new EmbedBuilder()
+                .setColor(0x00FF00)
+                .setDescription(
+                    `Role added successfully`
+                );
+            return interaction.editReply({embeds: [successEmbed]});
         }
 
         if (interaction.options.getSubcommand() === "remove") {
@@ -98,7 +102,12 @@ module.exports = {
                     `Role removed per slash command executed by <${interaction.member.user.username}> (${interaction.member.nickname}) || Reason: ${reason}.`
                 );
 
-            return await interaction.editReply("Role removed successfully.");
+            const successEmbed = new EmbedBuilder()
+                .setColor(0x00FF00)
+                .setDescription(
+                    `Role removed successfully`
+                );
+            return interaction.editReply({embeds: [successEmbed]});
         }
 
 
