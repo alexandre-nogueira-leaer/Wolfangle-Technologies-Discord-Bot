@@ -3,7 +3,6 @@
 // Updated by: Alecaan (CO WEB)
 const {SlashCommandBuilder, EmbedBuilder} = require("discord.js");
 
-//TODO - Merge all support commands into one with subcommands
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("support")
@@ -104,12 +103,12 @@ module.exports = {
                 return await interaction.editReply({embeds: [errorEmbed]});
             }
 
-            const errorEmbed = new EmbedBuilder()
+            const successEmbed = new EmbedBuilder()
                 .setColor(0x00FF00)
                 .setDescription(
                     `Support session successfully started!\nTo end the session please use the \`/endsupport\` slash command`
                 );
-            return interaction.editReply({embeds: [errorEmbed]});
+            return interaction.editReply({embeds: [successEmbed]});
         }
 
         if (interaction.options.getSubcommand() === "end") {
@@ -131,12 +130,12 @@ module.exports = {
                 }
             )
 
-            const errorEmbed = new EmbedBuilder()
+            const successEmbed = new EmbedBuilder()
                 .setColor(0x00FF00)
                 .setDescription(
                     `Support session successfully ended!`
                 );
-            return interaction.editReply({embeds: [errorEmbed]});
+            return interaction.editReply({embeds: [successEmbed]});
         }
 
 
