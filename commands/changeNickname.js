@@ -50,7 +50,12 @@ module.exports = {
                 newNickname,
                 `Nickname changed per slash command executed by <${interaction.member.user.username}> (${interaction.member.nickname}) Reason: ${reason}.`
             );
-            return await interaction.editReply("Nickname successfully changed!");
+            const successEmbed = new EmbedBuilder()
+                .setColor(0x00FF00)
+                .setDescription(
+                    `Nickname successfully changed!`
+                );
+            return interaction.editReply({embeds: [successEmbed]});
         }
 
         if (
@@ -71,8 +76,13 @@ module.exports = {
                 newNickname,
                 `Nickname changed per slash command executed by <${interaction.member.user.username}> (${interaction.member.nickname}) || Reason: ${reason}.`
             );
-        return await interaction.editReply("Nickname successfully changed!");
 
+        const successEmbed = new EmbedBuilder()
+            .setColor(0x00FF00)
+            .setDescription(
+                `Nickname successfully changed!`
+            );
+        return interaction.editReply({embeds: [successEmbed]});
 
     },
 };
